@@ -1,0 +1,12 @@
+apiDir: "../search-api-api/src/main/java"
+apiPackagePath: "search.api"
+generateGraphQL: false
+application:
+    baseURI: "/search-api"
+    className: "SearchApiApplication"
+    name: "SearchApi"
+    security:
+        basicAuth: true
+        guestAllowed: true
+        oAuth2: true
+author: "ligasm"

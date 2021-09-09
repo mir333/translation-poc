@@ -1,0 +1,43 @@
+components:
+    schemas:
+        Search:
+            properties:
+                result:
+                    type: string
+
+openapi: 3.0.1
+info:
+    description: "SearchApi REST API"
+    license:
+        name: "Apache 2.0"
+        url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    title: "SearchApi"
+    version: v1.0
+paths:
+    "/searchs":
+        get:
+            operationId: getSearch
+            tags: ["Search"]
+            summary: "Search"
+            description: "Search"
+            parameters:
+                - name: variation
+                  in: query
+                  schema:
+                      type: string
+            responses:
+                "200":
+                    description: "OK"
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref:  "#/components/schemas/Search"
+                        application/xml:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Search"
+
+

@@ -1,0 +1,3 @@
+Bundle-Name: search-api-impl
+Bundle-SymbolicName: im.ligas.search.api.impl
+Bundle-Version: 1.0.0
