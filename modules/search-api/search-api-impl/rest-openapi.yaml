@@ -4,20 +4,31 @@ components:
             properties:
                 result:
                     type: string
+            type: object
+        WebContentInfo:
+            properties:
+                email:
+                    type: string
+                articleId:
+                    type: string
+                siteId:
+                    type: integer
+                lang:
+                    type: string
+            type: object
 
 openapi: 3.0.1
 info:
-    description: "SearchApi REST API"
+    description: "CustomSearchApi REST API"
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-    title: "SearchApi"
+    title: "CustomSearchApi"
     version: v1.0
 paths:
     "/searchs":
         get:
             operationId: getSearch
-            tags: ["Search"]
             summary: "Search"
             description: "Search"
             parameters:
@@ -39,5 +50,25 @@ paths:
                                 type: array
                                 items:
                                     $ref: "#/components/schemas/Search"
-
-
+            tags: ["Search"]
+    "/webcontent":
+        post:
+            description:
+                WebContentInfo
+            operationId: postWebcontent
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/WebContentInfo"
+                    application/xml:
+                        schema:
+                            $ref: "#/components/schemas/WebContentInfo"
+            responses:
+                200:
+                    description: ""
+                    content:
+                        text/plain:
+                            schema:
+                                type: string
+            tags: ["WebContentInfo"]

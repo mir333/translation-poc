@@ -1,10 +1,10 @@
 apiDir: "../search-api-api/src/main/java"
-apiPackagePath: "search.api"
+apiPackagePath: "custom.search.api"
 generateGraphQL: false
 application:
     baseURI: "/search-api"
     className: "SearchApiApplication"
-    name: "SearchApi"
+    name: "CustomSearchApi"
     security:
         basicAuth: true
         guestAllowed: true

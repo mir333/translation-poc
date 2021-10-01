@@ -1,9 +1,10 @@
-package search.api.resource.v1_0;
+package custom.search.api.resource.v1_0;
 
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
-import com.liferay.portal.vulcan.pagination.Page;
+
+import custom.search.api.dto.v1_0.WebContentInfo;
 
 import java.util.Locale;
 
@@ -12,11 +13,10 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.osgi.annotation.versioning.ProviderType;
-
-import search.api.dto.v1_0.Search;
 
 /**
  * To access this resource, run:
@@ -28,13 +28,14 @@ import search.api.dto.v1_0.Search;
  */
 @Generated("")
 @ProviderType
-public interface SearchResource {
+public interface WebContentInfoResource {
 
 	public static Builder builder() {
 		return FactoryHolder.factory.create();
 	}
 
-	public Page<Search> getSearch(String variation) throws Exception;
+	public Response postWebcontent(WebContentInfo webContentInfo)
+		throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
@@ -70,7 +71,7 @@ public interface SearchResource {
 	@ProviderType
 	public interface Builder {
 
-		public SearchResource build();
+		public WebContentInfoResource build();
 
 		public Builder checkPermissions(boolean checkPermissions);
 

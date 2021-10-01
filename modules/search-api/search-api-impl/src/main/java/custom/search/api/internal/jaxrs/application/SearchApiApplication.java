@@ -1,4 +1,4 @@
-package search.api.internal.jaxrs.application;
+package custom.search.api.internal.jaxrs.application;
 
 import javax.annotation.Generated;
 
@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"liferay.jackson=false", "osgi.jaxrs.application.base=/search-api",
 		"osgi.jaxrs.extension.select=(osgi.jaxrs.name=Liferay.Vulcan)",
-		"osgi.jaxrs.name=SearchApi"
+		"osgi.jaxrs.name=CustomSearchApi"
 	},
 	service = Application.class
 )

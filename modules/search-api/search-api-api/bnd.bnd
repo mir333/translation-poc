@@ -2,5 +2,5 @@ Bundle-Name: search-api-api
 Bundle-SymbolicName: im.ligas.search.api.api
 Bundle-Version: 1.0.0
 Export-Package:\
-	search.api.dto.v1_0,\
-	search.api.resource.v1_0
+	custom.search.api.dto.v1_0,\
+	custom.search.api.resource.v1_0

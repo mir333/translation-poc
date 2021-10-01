@@ -1,4 +1,4 @@
-package search.api.dto.v1_0;
+package custom.search.api.dto.v1_0;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -113,7 +113,8 @@ public class Search implements Serializable {
 
 	@Schema(
 		accessMode = Schema.AccessMode.READ_ONLY,
-		defaultValue = "search.api.dto.v1_0.Search", name = "x-class-name"
+		defaultValue = "custom.search.api.dto.v1_0.Search",
+		name = "x-class-name"
 	)
 	public String xClassName;
 

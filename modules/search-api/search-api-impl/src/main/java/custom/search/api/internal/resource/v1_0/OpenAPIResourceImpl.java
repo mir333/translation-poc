@@ -1,4 +1,4 @@
-package search.api.internal.resource.v1_0;
+package custom.search.api.internal.resource.v1_0;
 
 import com.liferay.portal.vulcan.resource.OpenAPIResource;
 
@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 )
 @Generated("")
 @OpenAPIDefinition(
-	info = @Info(description = "SearchApi REST API", license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), title = "SearchApi", version = "v1.0")
+	info = @Info(description = "CustomSearchApi REST API", license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html"), title = "CustomSearchApi", version = "v1.0")
 )
 @Path("/v1.0")
 public class OpenAPIResourceImpl {
@@ -67,6 +67,8 @@ public class OpenAPIResourceImpl {
 	private final Set<Class<?>> _resourceClasses = new HashSet<Class<?>>() {
 		{
 			add(SearchResourceImpl.class);
+
+			add(WebContentInfoResourceImpl.class);
 
 			add(OpenAPIResourceImpl.class);
 		}

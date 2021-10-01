@@ -1,4 +1,4 @@
-package search.api.internal.resource.v1_0;
+package custom.search.api.internal.resource.v1_0;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -20,16 +20,15 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import custom.search.api.dto.v1_0.WebContentInfo;
+import custom.search.api.resource.v1_0.WebContentInfoResource;
+
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
 import java.io.Serializable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -39,16 +38,14 @@ import javax.annotation.Generated;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
-import search.api.dto.v1_0.Search;
-import search.api.resource.v1_0.SearchResource;
 
 /**
  * @author ligasm
@@ -56,42 +53,42 @@ import search.api.resource.v1_0.SearchResource;
  */
 @Generated("")
 @Path("/v1.0")
-public abstract class BaseSearchResourceImpl
-	implements EntityModelResource, SearchResource,
-			   VulcanBatchEngineTaskItemDelegate<Search> {
+public abstract class BaseWebContentInfoResourceImpl
+	implements EntityModelResource,
+			   VulcanBatchEngineTaskItemDelegate<WebContentInfo>,
+			   WebContentInfoResource {
 
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -X 'GET' 'http://localhost:8080/o/search-api/v1.0/searchs'  -u 'test@liferay.com:test'
+	 * curl -X 'POST' 'http://localhost:8080/o/search-api/v1.0/webcontent' -d $'{"articleId": ___, "email": ___, "lang": ___, "siteId": ___}' --header 'Content-Type: application/json' -u 'test@liferay.com:test'
 	 */
-	@GET
-	@Operation(description = "Search")
+	@Consumes({"application/json", "application/xml"})
+	@Operation(description = "WebContentInfo")
 	@Override
-	@Parameters(
-		value = {@Parameter(in = ParameterIn.QUERY, name = "variation")}
-	)
-	@Path("/searchs")
-	@Produces({"application/json", "application/xml"})
-	@Tags(value = {@Tag(name = "Search")})
-	public Page<Search> getSearch(
-			@Parameter(hidden = true) @QueryParam("variation") String variation)
+	@Path("/webcontent")
+	@POST
+	@Produces("text/plain")
+	@Tags(value = {@Tag(name = "WebContentInfo")})
+	public Response postWebcontent(WebContentInfo webContentInfo)
 		throws Exception {
 
-		return Page.of(Collections.emptyList());
+		Response.ResponseBuilder responseBuilder = Response.ok();
+
+		return responseBuilder.build();
 	}
 
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
-			java.util.Collection<Search> searches,
+			java.util.Collection<WebContentInfo> webContentInfos,
 			Map<String, Serializable> parameters)
 		throws Exception {
 	}
 
 	@Override
 	public void delete(
-			java.util.Collection<Search> searches,
+			java.util.Collection<WebContentInfo> webContentInfos,
 			Map<String, Serializable> parameters)
 		throws Exception {
 	}
@@ -112,7 +109,7 @@ public abstract class BaseSearchResourceImpl
 	}
 
 	@Override
-	public Page<Search> read(
+	public Page<WebContentInfo> read(
 			Filter filter, Pagination pagination, Sort[] sorts,
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
@@ -144,7 +141,7 @@ public abstract class BaseSearchResourceImpl
 
 	@Override
 	public void update(
-			java.util.Collection<Search> searches,
+			java.util.Collection<WebContentInfo> webContentInfos,
 			Map<String, Serializable> parameters)
 		throws Exception {
 	}
