@@ -6,6 +6,10 @@ import com.liferay.portal.search.engine.adapter.search.SearchSearchResponse;
 import com.liferay.portal.search.hits.SearchHits;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.query.WildcardQuery;
+import com.liferay.portal.search.sort.Sort;
+import com.liferay.portal.search.sort.SortBuilder;
+import com.liferay.portal.search.sort.SortBuilderFactory;
+import com.liferay.portal.search.sort.SortOrder;
 import com.liferay.portal.vulcan.pagination.Page;
 import custom.search.api.dto.v1_0.Search;
 import custom.search.api.resource.v1_0.SearchResource;
@@ -29,7 +33,8 @@ public class SearchResourceImpl extends BaseSearchResourceImpl {
 	private SearchEngineAdapter searchEngineAdapter;
 	@Reference
 	private Queries queries;
-
+	@Reference
+	private SortBuilderFactory factory;
 	@Override
 	public Page<Search> getSearch(String variation) throws Exception {
 
@@ -41,6 +46,11 @@ public class SearchResourceImpl extends BaseSearchResourceImpl {
 		searchSearchRequest.setIndexNames("_all");
 		searchSearchRequest.setQuery(wildcardQuery);
 		searchSearchRequest.setSize(20);
+
+		SortBuilder sortBuilder = factory.getSortBuilder();
+		final Sort ratings = sortBuilder.field("ratings").sortOrder(SortOrder.ASC).build();
+		searchSearchRequest.addSorts(ratings);
+
 
 		SearchSearchResponse searchSearchResponse =
 				searchEngineAdapter.execute(searchSearchRequest);
