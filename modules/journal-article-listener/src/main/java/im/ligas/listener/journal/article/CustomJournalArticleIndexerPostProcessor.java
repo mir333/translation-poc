@@ -1,6 +1,7 @@
 package im.ligas.listener.journal.article;
 
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.BaseIndexerPostProcessor;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
@@ -25,17 +26,14 @@ public class CustomJournalArticleIndexerPostProcessor extends BaseIndexerPostPro
 
     @Override
     public void postProcessDocument(Document document, Object object) throws Exception {
-
-        JournalArticle journalArticle = (JournalArticle) object;
-        RatingsStats ratingsStats = null;
-        double ratingsPoints = 0;
-
-        ratingsStats = ratingsStatsLocalService.getStats(JournalArticle.class.getName(), journalArticle.getResourcePrimKey());
-        ratingsPoints = ratingsStats.getTotalScore();
-
-
-        if (ratingsPoints > 0) {
-            document.addNumberSortable("ratings", ratingsPoints);
+        double score = 0;
+        try {
+            JournalArticle journalArticle = (JournalArticle) object;
+            RatingsStats ratingsStats = ratingsStatsLocalService.getStats(JournalArticle.class.getName(), journalArticle.getResourcePrimKey());
+            score = ratingsStats.getTotalScore();
+        } catch (PortalException e) {
+            LOG.error(e.getMessage());
         }
+        document.addNumberSortable("ratings", score);
     }
 }

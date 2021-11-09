@@ -65,6 +65,34 @@ public class Search implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String result;
 
+	@Schema
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+
+	@JsonIgnore
+	public void setScore(
+		UnsafeSupplier<String, Exception> scoreUnsafeSupplier) {
+
+		try {
+			score = scoreUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String score;
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -102,6 +130,20 @@ public class Search implements Serializable {
 			sb.append("\"");
 
 			sb.append(_escape(result));
+
+			sb.append("\"");
+		}
+
+		if (score != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"score\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(score));
 
 			sb.append("\"");
 		}

@@ -83,7 +83,7 @@ public class TranslationJournalArticleModalListener extends BaseModelListener<Jo
             LOG.info(article.getTitleMapAsXML());
             LOG.info(model.getTitleMapAsXML());
         } catch (PortalException e) {
-            e.printStackTrace();
+           LOG.info(e.getMessage());
         }
 
         final StringBuilder stringBuilder = new StringBuilder();

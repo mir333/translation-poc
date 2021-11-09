@@ -2,6 +2,8 @@ components:
     schemas:
         Search:
             properties:
+                score:
+                    type: string
                 result:
                     type: string
             type: object
