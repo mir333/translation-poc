@@ -2,3 +2,5 @@ Bundle-Name: journal-article-listener
 Bundle-SymbolicName: im.ligas.listener.journal.article
 Bundle-Version: 1.0.0
 Export-Package: im.ligas.listener.journal.article
+
+-dsannotations-options: inherit

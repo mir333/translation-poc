@@ -1,11 +1,16 @@
-package im.ligas.listener.journal.article;
+package im.ligas.listener.rating;
 
+import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.knowledge.base.model.KBArticle;
+import com.liferay.knowledge.base.service.KBArticleLocalService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.ratings.kernel.model.RatingsStats;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -20,6 +25,11 @@ public class RatingModalListener extends BaseModelListener<RatingsStats> {
 
     @Reference
     private JournalArticleLocalService journalArticleLocalService;
+    @Reference
+    private DLFileEntryLocalService dlFileEntryService;
+    @Reference
+    private KBArticleLocalService kbArticleLocalService;
+
     @Override
     public void onAfterAddAssociation(Object classPK, String associationClassName, Object associationClassPK) throws ModelListenerException {
         LOG.error("onAfterAddAssociation");
@@ -47,10 +57,18 @@ public class RatingModalListener extends BaseModelListener<RatingsStats> {
         LOG.error("onAfterUpdate");
         LOG.info("{}", getString(model));
         try {
-            final JournalArticle latestArticle = journalArticleLocalService.getLatestArticle(model.getClassPK());
-            journalArticleLocalService.updateJournalArticle(latestArticle);
+            if (model.getClassName().equals(DLFileEntry.class.getName())) {
+                final DLFileEntry dlFileEntry = dlFileEntryService.getFileEntry(model.getClassPK());
+                dlFileEntryService.updateDLFileEntry(dlFileEntry);
+            } else if (model.getClassName().equals(JournalArticle.class.getName())) {
+                final JournalArticle latestArticle = journalArticleLocalService.getLatestArticle(model.getClassPK());
+                journalArticleLocalService.updateJournalArticle(latestArticle);
+            } else if (model.getClassName().equals(KBArticle.class.getName())) {
+                final KBArticle latestArticle = kbArticleLocalService.getLatestKBArticle(model.getClassPK(), WorkflowConstants.STATUS_APPROVED);
+                kbArticleLocalService.updateKBArticle(latestArticle);
+            }
         } catch (PortalException e) {
-            LOG.error("Something went wrong",e);
+            LOG.error("Something went wrong", e);
         }
     }
 
