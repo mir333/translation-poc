@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="wrapper">
+
+    <!--  START   -->
+    <!--  PROVIDE A VALID SNIPPET OF WEB CONTENT-->
+    <div class="container-fluid-1280 mt-2">
+        <p>This is just a simple test</p>
+
+        <p>&nbsp;</p>
+
+        <p>
+            <picture data-fileentryid="5358170">
+                <source media="(max-width:300px)"
+                        srcset="/o/adaptive-media/image/5358170/Thumbnail-300x300/Screenshot+from+2020-04-11+08-48-33.png?t=1641460959725">
+                <source media="(max-width:1000px) and (min-width:300px)"
+                        srcset="/o/adaptive-media/image/5358170/Preview-1000x0/Screenshot+from+2020-04-11+08-48-33.png?t=1641460959725">
+                <img src="/documents/792890/0/Screenshot+from+2020-04-11+08-48-33.png/8f0c9af9-036f-f9d4-49cd-5ea2e4f05203?t=1641460959725">
+            </picture>
+            <br>
+            &nbsp;
+        </p>
+        <p>
+            <picture data-fileentryid="5358170">
+                <source media="(max-width:300px)"
+                        srcset="/o/adaptive-media/image/5358170/Thumbnail-300x300/Screenshot+from+2020-04-11+08-48-33.png?t=1641460959725">
+                <source media="(max-width:1000px) and (min-width:300px)"
+                        srcset="/o/adaptive-media/image/5358170/Preview-1000x0/Screenshot+from+2020-04-11+08-48-33.png?t=1641460959725">
+                <img src="/documents/792890/0/Screenshot+from+2020-04-11+08-48-33.png/8f0c9af9-036f-f9d4-49cd-5ea2e4f05203?t=1641460959725">
+            </picture>
+            <br>
+            &nbsp;
+        </p>
+    </div>
+    <!--  END  -->
+
+</div>
+
+<script type="text/javascript">
+    /* Insert the target server URL   */
+    const BASE_SERVER_URL = ""
+    /* Insert and valid oauth2Token */
+    const oauth2Token = "";
+    if(!BASE_SERVER_URL || !oauth2Token) alert("Missing data")
+
+    const pictures = document.querySelector('#wrapper').querySelectorAll("picture");
+
+    const fetchImage = (url, headers) => {
+        return new Promise((resolve, reject) => {
+            fetch(url, headers)
+                .then(response => response.blob())
+                .then(blob => {
+                    const objectUrl = URL.createObjectURL(blob);
+                    resolve(objectUrl);
+                })
+                .catch(err => reject(err));
+        });
+    }
+
+    pictures.forEach((picture) => {
+        const parent = picture.parentElement
+        const img = picture.querySelector("img")
+
+        /* This needs to be adjusted if the snippet contains full URLs. Base URL will not be needed */
+        const url = img.getAttribute("src");
+        const fullUrl = `${BASE_SERVER_URL}${url}`
+
+        picture.remove();
+
+        fetchImage(fullUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${oauth2Token}`
+            }
+        })
+            .then(objectUrl => {
+                var elem = new Image();
+                elem.src = objectUrl;
+                parent.append(elem)
+            })
+            .catch(err => console.log(err));
+
+    })
+
+
+</script>
+</body>
+</html>
