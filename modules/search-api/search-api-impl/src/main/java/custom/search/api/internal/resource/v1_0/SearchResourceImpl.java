@@ -19,6 +19,8 @@ import com.liferay.portal.search.script.Scripts;
 import com.liferay.portal.search.sort.SortBuilderFactory;
 import com.liferay.portal.vulcan.pagination.Page;
 import custom.search.api.dto.v1_0.Search;
+import custom.search.api.internal.configuration.SearchConfiguration;
+import custom.search.api.internal.configuration.SearchConfigurationHelper;
 import custom.search.api.resource.v1_0.SearchResource;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,6 +43,8 @@ public class SearchResourceImpl extends BaseSearchResourceImpl {
     private static Logger LOG = LoggerFactory.getLogger(SearchResourceImpl.class);
 
     @Reference
+    private SearchConfigurationHelper configurationHelper;
+    @Reference
     private SearchEngineAdapter searchEngineAdapter;
     @Reference
     private Queries queries;
@@ -53,6 +57,8 @@ public class SearchResourceImpl extends BaseSearchResourceImpl {
 
     @Override
     public Page<Search> getSearch(String variation) throws Exception {
+        final SearchConfiguration configuration = configurationHelper.getConfiguration();
+
 
         final BooleanQuery bq = queries.booleanQuery();
 
@@ -93,19 +99,22 @@ public class SearchResourceImpl extends BaseSearchResourceImpl {
 //        final ScriptScoreFunction scoreFunction = scoreFunctions.script(script);
 //        functionScoreQuery.addFilterQueryScoreFunctionHolder(null, scoreFunction);
 
-        final Script script2 = scripts.script( "try{ if(doc.containsKey('ratings_Number_sortable')){_score + (_score /100) * 1 + Math.log(1 + doc['ratings_Number_sortable'].value)} } catch(Exception e) {}");
+        final Script script2 = scripts.script( configuration.scoringFunction());
         final ScriptScoreFunction scoreFunction2 = scoreFunctions.script(script2);
         functionScoreQuery.addFilterQueryScoreFunctionHolder(null, scoreFunction2);
-
         functionScoreQuery.setScoreMode(FunctionScoreQuery.ScoreMode.MAX);
+
 
         SearchSearchRequest searchSearchRequest =
                 new SearchSearchRequest();
 
+        final Query queryToUse = configuration.enableScoringFunction() ? functionScoreQuery: bq;
+
         searchSearchRequest.setIndexNames("_all");
-        searchSearchRequest.setQuery(functionScoreQuery);
+        searchSearchRequest.setQuery(queryToUse);
         searchSearchRequest.setSize(20);
         searchSearchRequest.setScoreEnabled(true);
+        searchSearchRequest.setFetchSourceIncludes(new String[]{"entryClassName", "title_en_US", "entryClassPK", "priority_sortable", "ratings","ratings_Number_sortable"});
 
         searchSearchRequest.setTrackTotalHits(true);
         searchSearchRequest.setExplain(true);

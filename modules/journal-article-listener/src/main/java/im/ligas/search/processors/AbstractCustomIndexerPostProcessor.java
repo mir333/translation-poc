@@ -20,7 +20,7 @@ public abstract class AbstractCustomIndexerPostProcessor extends BaseIndexerPost
         double score = 0;
         try {
             RatingsStats ratingsStats = ratingsStatsLocalService.getStats(getClassName(), getClassPk(object));
-            score = ratingsStats.getTotalScore();
+            score = ratingsStats.getAverageScore();
         } catch (PortalException e) {
             LOG.error(e.getMessage());
         }
